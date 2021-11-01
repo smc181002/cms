@@ -19,4 +19,26 @@
   h3 { 
     @apply text-xl; 
   }
+
+  /* BUTTON CSS */
+  .cms-btn {
+    @apply py-2 px-4 rounded transition-all;
+  }
+
+  .cms-btn-blue {
+    @apply bg-blue-600 hover:bg-blue-700 text-white ;
+  }
+
+  /* INPUT CSS */
+  .cms-textfield {
+    @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-600;
+  }
+
+  .cms-error {
+    @apply border border-red-500 focus:ring-2 focus:ring-red-500; 
+  }
+
+  .cms-error-box {
+    @apply text-red-500 text-xs italic;
+  }
 }

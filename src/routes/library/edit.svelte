@@ -1,17 +1,11 @@
 <script>
   import axios from 'axios';
   import Header from '$lib/header/Header.svelte';
-  import BookList from '$lib/library/BookList.svelte';
-  import { cookiePromise } from '$lib/functions/getCookie';
-  import { goto } from '$app/navigation';
+  import BookListEdit from '$lib/library/BookListEdit.svelte';
   /* let url = "http://192.168.0.102:3001/page/" */
   /* let url = "http://c080-49-204-229-55.ngrok.io/page/" */
   /* let url = "http://localhost:3001/api/library/addNewBook/" */
   /* $: url = `http://localhost:3001/api/library/listBooks?page=${page}` */
-  cookiePromise.then(user => {
-    let role = user.split("-")[1];
-    if (role == 'librarian' || role == 'admin') goto('library/edit')
-  })
   let page = 1;
   let url;
   async function getData(page) {
@@ -63,7 +57,7 @@
           </li>
         {/each}
       </ul>
-      <BookList data={data.data} />
+      <BookListEdit data={data.data} />
       {/await}
     </div>
   </div>

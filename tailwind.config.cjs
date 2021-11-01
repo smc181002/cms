@@ -11,6 +11,10 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    extend: {
+      backgroundColor: ['disabled'],
+    }
+  },
   plugins: [],
 }

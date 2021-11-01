@@ -1,11 +1,14 @@
 <script context="module">
   export const prerender = true;
+  import { browser } from '$app/env'; 
 </script>
 
 <script>
 	import Header from '$lib/header/Header.svelte';
 	import Announce from '$lib/landing/Announce.svelte';
   import Card from '$lib/landing/Card.svelte';
+
+  import { getCookieValueByName } from '$lib/functions/getCookie';
 
   let data = [
     {
@@ -24,41 +27,29 @@
       button: {text: 'Go to Online Tutorials', link: '/online-tuts'},
     },
   ]
+
+  if(browser) {
+    console.log(getCookieValueByName('user'));
+  }
 </script>
 <svelte:head>
 	<title>Home</title>
 </svelte:head>
 
-<Header title="college management"/>
+<div class="fixed w-full z-20 bg-white">
+  <Header title="college management"/>
+</div>
 
 <main class="flex gap-4 h-full">
   <div class="flex-grow p-4 h-full">
-    <main class="min-h-full">
+    <main class="min-h-full mt-20">
       {#each data as { title, subtitle, button }}
         <Card title={title} subtitle={subtitle} button={button}/>
       {/each}
 
     </main>
   </div>
-  <div class="flex-1 fixed right-0 w-1/3 h-screen">
+  <div class="flex-1 fixed right-0 w-1/3 h-screen mt-20">
     <Announce />
   </div>
 </main>
-
-<style>
-  .btn {
-    @apply p-2 rounded-full transition-all;
-  }
-  .btn-blue {
-    top: 10rem;
-    transform: translateX(-50%);
-    z-index: 4;
-    @apply bg-white text-blue-500;
-  }
-  .btn-blue:hover {
-    @apply bg-blue-700;
-  }
-  .btn-blue:active {
-    @apply bg-blue-400;
-  }
-</style>
