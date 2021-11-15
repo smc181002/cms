@@ -24,7 +24,7 @@
     {
       title: 'Library is not enough? choose online learning for any resource',
       subtitle: 'Access endless resources of knowledge with the help of our college library resources ranging from ebooks to research journals.',
-      button: {text: 'Go to Online Tutorials', link: '/online-tuts'},
+      button: {text: 'Go to Online Tutorials', link: '/tutorials'},
     },
   ]
 

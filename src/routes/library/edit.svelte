@@ -2,6 +2,10 @@
   import axios from 'axios';
   import Header from '$lib/header/Header.svelte';
   import BookListEdit from '$lib/library/BookListEdit.svelte';
+  import Modal from '$lib/Modal.svelte';
+  import Paginator from '$lib/library/Paginator.svelte';
+  /* import { cookiePromise } from '$lib/functions/getCookie'; */
+  /* import { goto } from '$app/navigation'; */
   /* let url = "http://192.168.0.102:3001/page/" */
   /* let url = "http://c080-49-204-229-55.ngrok.io/page/" */
   /* let url = "http://localhost:3001/api/library/addNewBook/" */
@@ -20,12 +24,87 @@
   $: getDataPromise = getData(page);
   /* const pageIncrement = () => page++ */
 
+  let showModal = false;
+  const handleToggleModal = () => {
+    showModal = !showModal
+  }
+
+  let newBook = {
+    title: "",
+    author: "",
+    type: "",
+    publication: "",
+    coverPic: "",
+  };
+
+  let addNewBookModal = [
+    {name: "Title", value: 'title'},
+    {name: "Author", value: 'author'},
+    {name: "Type", value: 'type'},
+    {name: "Publication", value: 'publication'},
+    {name: "Cover Pic Link", value: 'coverPic'},
+  ]
+
+  async function addBook(newBook) {
+    url = `http://localhost:3001/api/library/addNewBook`;
+    try{
+      /* console.log(newBook); */
+      handleToggleModal();
+      let post =  await axios.post(url, newBook, {withCredentials: true});
+
+      getDataPromise = getData(page);
+
+      return post;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function deleteBook(_id) {
+    let url = `http://localhost:3001/api/library/deleteBook/${_id}`
+    console.log("test");
+    try{
+      await axios.delete(url, {withCredentials: true});
+
+      getDataPromise = getData(page);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 </script>
 <svelte:head>
 	<title>Home</title>
 </svelte:head>
 
 <Header title="library" />
+
+<Modal
+  title="Add New Book"
+  open={showModal}
+  on:close={() => handleToggleModal()}
+>
+  <svelte:fragment slot="body">
+    <form on:submit={() => addBook(newBook, page)}>
+      {#each addNewBookModal as modalData (modalData.value) }
+        <div class="{(modalData.value === 'coverPic') ? 'mb-6' : 'mb-4'}">
+          <label class="cms-label" for="{modalData.value}"> {modalData.name} </label>
+          <input 
+            class="cms-textfield" 
+            id="{modalData.value}" 
+            type="text" 
+            placeholder="{modalData.name}" 
+            bind:value={newBook[modalData.value]} 
+            autocomplete="off">
+        </div>
+      {/each}
+      <div class="flex items-center justify-between">
+        <button type="submit" class="cms-btn cms-btn-blue">
+          Add New Book
+        </button>
+      </div>
+    </form>
+  </svelte:fragment>
+</Modal>
 
 <main class="flex flex-col gap-4 h-full">
 
@@ -45,22 +124,32 @@
     <div class="px-16">
       <h1 class="text-left mb-6">Books</h1>
       {#await getDataPromise then data}
-      <ul class="flex mb-2">
-        {#each Array.from({length: data.data.totalPages }, (_, i) => i + 1) as pageNo (pageNo) }
-          <li>
-            <button 
-              class="{(pageNo == data.data.page) ? 'bg-blue-600 text-white shadow' : 'border border-gray'} cms-btn w-12 rounded-lg  mr-2 hover:bg-blue-500 hover:text-white"
-              on:click="{() => (page = pageNo)}"
-            >
-              {pageNo}
-            </button>
-          </li>
-        {/each}
-      </ul>
-      <BookListEdit data={data.data} />
+        <ul class="flex mb-2">
+          {#each Array.from({length: data.data.totalPages }, (_, i) => i + 1) as pageNo (pageNo) }
+            <li>
+              <button 
+                class="{(pageNo == data.data.page) ? 'bg-blue-600 text-white shadow' : 'border border-gray'} cms-btn w-12 rounded-lg mr-2 hover:bg-blue-500 hover:text-white"
+                on:click="{() => (page = pageNo)}"
+              >
+                {pageNo}
+              </button>
+            </li>
+          {/each}
+        </ul>
+        <BookListEdit data={data.data} on:open={handleToggleModal} deleteBook={deleteBook}/>
+        <ul class="flex mb-2">
+          {#each Array.from({length: data.data.totalPages }, (_, i) => i + 1) as pageNo (pageNo) }
+            <li>
+              <button 
+                class="{(pageNo == data.data.page) ? 'bg-blue-600 text-white shadow' : 'border border-gray'} cms-btn w-12 rounded-lg mr-2 hover:bg-blue-500 hover:text-white"
+                on:click="{() => (page = pageNo)}"
+              >
+                {pageNo}
+              </button>
+            </li>
+          {/each}
+        </ul>
       {/await}
     </div>
   </div>
-
-
 </main>

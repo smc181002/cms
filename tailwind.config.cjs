@@ -14,7 +14,10 @@ module.exports = {
   variants: {
     extend: {
       backgroundColor: ['disabled'],
+      dropShadow: ['hover', 'focus'],
     }
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }

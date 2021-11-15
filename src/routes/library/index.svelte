@@ -10,7 +10,7 @@
   /* $: url = `http://localhost:3001/api/library/listBooks?page=${page}` */
   cookiePromise.then(user => {
     let role = user.split("-")[1];
-    if (role == 'librarian' || role == 'admin') goto('library/edit')
+    if (role == 'librarian' || role == 'admin') goto('/library/edit')
   })
   let page = 1;
   let url;
