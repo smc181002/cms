@@ -44,6 +44,7 @@
       let data = await axios.post(url, {email, password}, {withCredentials: true});
       if (data.data.user) {
         goto("/");
+        location.reload()
       }
     } catch (err) {
       console.log(err);

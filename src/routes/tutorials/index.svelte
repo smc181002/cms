@@ -31,9 +31,9 @@
 <Header title="Online Tutorials" />
 <main>
   <div class="px-16">
-    <h1 class="text-left my-6">Books</h1>
+    <h1 class="text-left my-6">Tutorials</h1>
     {#await cookiePromise then user}
-      {#if (user.split("-")[1] == 'librarian' || user.split("-")[1] == 'admin') }
+      {#if (user.split("-")[1] == 'faculty' || user.split("-")[1] == 'admin') }
         <button class="cms-btn cms-btn-blue my-4" on:click="{() => goto($Page.path + '/add')}">
           Add New Tutorials Page
         </button>

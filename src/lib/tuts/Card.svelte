@@ -6,6 +6,7 @@
   /* import {marked} from 'marked'; */
 
   let {_id, title, userid} = docs;
+  console.log(userid);
   async function getUser() {
     let url = `http://localhost:3001/api/misc/getUserName/${userid}`;
     try{
@@ -26,9 +27,7 @@
         {title}
       </h1>
       <div class="w-full flex-none text-sm font-medium text-gray-500 mt-1 mb-4">
-        {#await getUser() then user}
-          {user.data.user}
-        {/await}
+        {userid.email}
       </div>
     </div>
   </div>
